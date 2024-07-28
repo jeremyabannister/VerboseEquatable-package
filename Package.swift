@@ -1,23 +1,55 @@
 // swift-tools-version: 5.10
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
+///
 import PackageDescription
 
+
+///
 let package = Package(
     name: "VerboseEquatable-package",
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
+        
+        ///
         .library(
-            name: "VerboseEquatable-package",
-            targets: ["VerboseEquatable-package"]),
+            name: "VerboseEquatable-module",
+            targets: ["VerboseEquatable-module"]
+        ),
+    ],
+    dependencies: [
+        
+        ///
+        .package(
+            url: "https://github.com/jeremyabannister/subscript-collection-safely",
+            "0.1.1" ..< "0.2.0"
+        ),
+        
+        ///
+        .package(
+            url: "https://github.com/jeremyabannister/ValueType-package",
+            "0.1.0" ..< "0.2.0"
+        ),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
+        
+        ///
         .target(
-            name: "VerboseEquatable-package"),
+            name: "VerboseEquatable-module",
+            dependencies: [
+                "subscript-collection-safely",
+                .product(name: "ValueType-module", package: "ValueType-package")
+            ]
+        ),
+        
+        ///
         .testTarget(
-            name: "VerboseEquatable-packageTests",
-            dependencies: ["VerboseEquatable-package"]),
+            name: "VerboseEquatable-module-tests",
+            dependencies: [
+                "VerboseEquatable-module",
+                .product(
+                    name: "ValueTypeTestToolkit",
+                    package: "ValueType-package"
+                ),
+            ]
+        ),
     ]
 )
