@@ -15,6 +15,18 @@ extension UInt: AtomicallyEquatable { }
 extension UUID: AtomicallyEquatable { }
 
 ///
+extension Range: VerboseEquatable
+    where Bound: VerboseEquatable {
+    
+    ///
+    public var equalityCheck: EqualityCheck<Self> {
+        EqualityCheck(self)
+            .compare(\.lowerBound, "lowerBound")
+            .compare(\.upperBound, "upperBound")
+    }
+}
+
+///
 extension ClosedRange: VerboseEquatable
     where Bound: VerboseEquatable {
     
